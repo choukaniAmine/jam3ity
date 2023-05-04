@@ -15,56 +15,48 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
-import com.example.demo.model.abonnement;
-
-
-import com.example.demo.repositor.abonnementRepositor;
-import com.example.demo.service.abonnementService;
-
-
+import com.example.demo.model.admin;
+import com.example.demo.repositor.adminRepositor;
+import com.example.demo.service.adminService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 
 @RestController
 @RequestMapping("/api")
-public class abonnementController {
+public class adminController {
 	 @Autowired
-	    private abonnementService ser;
+	    private adminService ser;
 	 @Autowired
-	 private abonnementRepositor rep;
-	 @GetMapping("/abonnement")
-	    public List<abonnement> list() {
+	 private adminRepositor rep;
+	 @GetMapping("/admin")
+	    public List<admin> list() {
 		
 	             return ser.getAll();
 	   }
 	 	 
-	 @GetMapping("/abonnement/{id}")
-	 public ResponseEntity<abonnement> post(@PathVariable String id){
-	 			Optional<abonnement> cat=ser.findByCode(id);
+	 @GetMapping("/admin/{id}")
+	 public ResponseEntity<admin> post(@PathVariable String id){
+	 			Optional<admin> cat=ser.findByEmail(id);
 	 			return cat.map(ResponseEntity::ok).orElseGet(() ->ResponseEntity.notFound().build());
 
 	    }
-	 @PostMapping("/abonnement")
-	    public long save(@RequestBody abonnement cat) {
+	 @PostMapping("/admin")
+	    public long save(@RequestBody admin cat) {
 		 
 	        return ser.save(cat);
 	    }
-	 @PutMapping("/abonnement/{id}")      
-		   public ResponseEntity<abonnement> update(@PathVariable long id, @RequestBody abonnement a) {
-		       abonnement ab = rep.findById(id)
+	 @PutMapping("/admin/{id}")      
+		   public ResponseEntity<admin> update(@PathVariable long id, @RequestBody admin a) {
+		       admin ab = rep.findById(id)
 		    		   .orElseThrow(() -> new exception.resourceNotFoundException("categorie not exist"));
-		     
 				ab.setId(a.getId());
-				ab.setImage(a.getImage());
-				ab.setLibelle(a.getImage());
-				ab.setCode(a.getCode());
-				ab.setQte(a.getQte());
-		    abonnement catupdate=rep.save(ab);
+				ab.setEmail(a.getEmail());
+				ab.setPwd(ab.getPwd());
+		    admin catupdate=rep.save(ab);
 		       return ResponseEntity.ok(catupdate);
 	        
 	    }
-		   @DeleteMapping("/abonnement/{id}")
+		   @DeleteMapping("/admin/{id}")
 		   public void delete(@PathVariable String id) {
 		       ser.delete(id);
 		   }

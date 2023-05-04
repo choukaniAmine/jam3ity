@@ -15,56 +15,56 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.model.joueursEnTest;
 
-import com.example.demo.model.abonnement;
+import com.example.demo.repositor.joueursEnTestRepositor;
 
-
-import com.example.demo.repositor.abonnementRepositor;
-import com.example.demo.service.abonnementService;
-
-
+import com.example.demo.service.joueursEnTestService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 
 @RestController
 @RequestMapping("/api")
-public class abonnementController {
+public class joueursEnTestController {
 	 @Autowired
-	    private abonnementService ser;
+	    private joueursEnTestService ser;
 	 @Autowired
-	 private abonnementRepositor rep;
-	 @GetMapping("/abonnement")
-	    public List<abonnement> list() {
+	 private joueursEnTestRepositor rep;
+	 @GetMapping("/joueursEnTest")
+	    public List<joueursEnTest> list() {
 		
 	             return ser.getAll();
 	   }
 	 	 
-	 @GetMapping("/abonnement/{id}")
-	 public ResponseEntity<abonnement> post(@PathVariable String id){
-	 			Optional<abonnement> cat=ser.findByCode(id);
-	 			return cat.map(ResponseEntity::ok).orElseGet(() ->ResponseEntity.notFound().build());
+	 @GetMapping("/joueursEnTest/{id}")
+	 public ResponseEntity<joueursEnTest> post(@PathVariable String id){
+	 			 			
 
+	Optional<joueursEnTest> cat=ser.findByEmail(id);
+	return cat.map(ResponseEntity::ok).orElseGet(() ->ResponseEntity.notFound().build());
 	    }
-	 @PostMapping("/abonnement")
-	    public long save(@RequestBody abonnement cat) {
+	 @PostMapping("/joueursEnTest")
+	    public long save(@RequestBody joueursEnTest cat) {
 		 
 	        return ser.save(cat);
 	    }
-	 @PutMapping("/abonnement/{id}")      
-		   public ResponseEntity<abonnement> update(@PathVariable long id, @RequestBody abonnement a) {
-		       abonnement ab = rep.findById(id)
+	 @PutMapping("/joueursEnTest/{id}")      
+		   public ResponseEntity<joueursEnTest> update(@PathVariable long id, @RequestBody joueursEnTest a) {
+			   joueursEnTest ab = rep.findById(id)
 		    		   .orElseThrow(() -> new exception.resourceNotFoundException("categorie not exist"));
-		     
 				ab.setId(a.getId());
-				ab.setImage(a.getImage());
-				ab.setLibelle(a.getImage());
-				ab.setCode(a.getCode());
-				ab.setQte(a.getQte());
-		    abonnement catupdate=rep.save(ab);
+				ab.setEmail(a.getEmail());
+				ab.setNom(a.getNom());
+				ab.setPrenom(a.getPrenom());
+				ab.setTel(a.getTel());
+				ab.setDateDeNaissance(a.getDateDeNaissance());
+				ab.setPoste(a.getPoste());
+				ab.setDatetest(a.getDatetest());
+				joueursEnTest catupdate=rep.save(ab);
 		       return ResponseEntity.ok(catupdate);
 	        
 	    }
-		   @DeleteMapping("/abonnement/{id}")
+		   @DeleteMapping("/joueursEnTest/{id}")
 		   public void delete(@PathVariable String id) {
 		       ser.delete(id);
 		   }

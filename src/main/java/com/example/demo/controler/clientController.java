@@ -16,55 +16,53 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import com.example.demo.model.abonnement;
+import com.example.demo.model.client;
 
+import com.example.demo.repositor.clientRepositor;
 
-import com.example.demo.repositor.abonnementRepositor;
-import com.example.demo.service.abonnementService;
-
-
+import com.example.demo.service.clientService;
 
 @CrossOrigin(origins = "http://localhost:4200")
 
 @RestController
 @RequestMapping("/api")
-public class abonnementController {
+public class clientController {
 	 @Autowired
-	    private abonnementService ser;
+	    private clientService ser;
 	 @Autowired
-	 private abonnementRepositor rep;
-	 @GetMapping("/abonnement")
-	    public List<abonnement> list() {
+	 private clientRepositor rep;
+	 @GetMapping("/client")
+	    public List<client> list() {
 		
 	             return ser.getAll();
 	   }
 	 	 
-	 @GetMapping("/abonnement/{id}")
-	 public ResponseEntity<abonnement> post(@PathVariable String id){
-	 			Optional<abonnement> cat=ser.findByCode(id);
+	 @GetMapping("/client/{id}")
+	 public ResponseEntity<client> post(@PathVariable String id){
+	 			Optional<client> cat=ser.findByEmail(id);
 	 			return cat.map(ResponseEntity::ok).orElseGet(() ->ResponseEntity.notFound().build());
 
 	    }
-	 @PostMapping("/abonnement")
-	    public long save(@RequestBody abonnement cat) {
+	 @PostMapping("/client")
+	    public long save(@RequestBody client cat) {
 		 
 	        return ser.save(cat);
 	    }
-	 @PutMapping("/abonnement/{id}")      
-		   public ResponseEntity<abonnement> update(@PathVariable long id, @RequestBody abonnement a) {
-		       abonnement ab = rep.findById(id)
+	 @PutMapping("/client/{id}")      
+		   public ResponseEntity<client> update(@PathVariable long id, @RequestBody client a) {
+		       client ab = rep.findById(id)
 		    		   .orElseThrow(() -> new exception.resourceNotFoundException("categorie not exist"));
-		     
-				ab.setId(a.getId());
-				ab.setImage(a.getImage());
-				ab.setLibelle(a.getImage());
-				ab.setCode(a.getCode());
-				ab.setQte(a.getQte());
-		    abonnement catupdate=rep.save(ab);
+		   	ab.setId(a.getId());
+			ab.setEmail(a.getEmail());
+			ab.setNom(a.getNom());
+			ab.setPrenom(a.getPrenom());
+			ab.setTel(a.getTel());
+			ab.setPwd(ab.getPwd());
+		    client catupdate=rep.save(ab);
 		       return ResponseEntity.ok(catupdate);
 	        
 	    }
-		   @DeleteMapping("/abonnement/{id}")
+		   @DeleteMapping("/client/{id}")
 		   public void delete(@PathVariable String id) {
 		       ser.delete(id);
 		   }
